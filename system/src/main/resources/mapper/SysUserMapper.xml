@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.system.dao.SysUserMapper">
+
+    <select id="selectByUsername" resultType="com.demo.mall.system.model.SysUser">
+        select *
+        from tz_sys_user
+        where username = #{username};
+    </select>
+
+    <select id="queryAllPerms" resultType="java.lang.String">
+        select m.perms
+        from tz_sys_user_role ur
+                 LEFT JOIN tz_sys_role_menu rm on ur.role_id = rm.role_id
+                 LEFT JOIN tz_sys_menu m on rm.menu_id = m.menu_id
+        where ur.user_id = #{userId}
+    </select>
+</mapper>
