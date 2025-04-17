@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.dao.CategoryPropMapper">
+
+    <delete id="deleteByPropId">
+        DELETE
+        FROM tz_category_prop
+        WHERE prop_id = #{propId}
+    </delete>
+</mapper>

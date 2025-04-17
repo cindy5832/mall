@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.dao.ProdPropMapper">
+
+    <delete id="deleteByPropId">
+        DELETE
+        FROM tz_prod_prop
+        WHERE prop_id = #{propId}
+          AND rule = #{rule}
+          AND shop_id = #{shopId}
+    </delete>
+
+    <select id="listPropAndValue" resultType="com.demo.mall.bean.model.ProdProp">
+        SELECT * FROM (
+        SELECT * FROM tz_prod_prop
+        WHERE rule = #{prodProp.rule} AND shop_id = #{prodProp.shopId}
+        <if test="prodProp.propName != null and prodProp.propName != ''">
+            AND prop_name LIKE concat('%',#{prodProp.propName},'%')
+        </if>
+        LIMIT #{adapter.begin} , #{adapter.size}
+        ) pp
+        LEFT JOIN tz_prod_prop_value ppv
+        ON pp.prop_id = ppv.prop_id
+    </select>
+
+    <select id="countPropAndValue" resultType="java.lang.Long">
+        SELECT count(0) FROM tz_prod_prop
+        WHERE rule = #{prodProp.rule} AND shop_id = #{prodProp.shopId}
+        <if test="prodProp.propName != null and prodProp.propName != ''">
+            AND prop_name LIKE concat('%',#{prodProp.propName},'%')
+        </if>
+    </select>
+
+    <select id="getProdPropByPropNameAndShopId" resultType="com.demo.mall.bean.model.ProdProp">
+        SELECT *
+        FROM tz_prod_prop
+        WHERE prop_name = #{propName}
+          AND shop_id = #{shopId}
+          AND rule = #{rule}
+    </select>
+</mapper>

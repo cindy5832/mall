@@ -8,6 +8,7 @@ import com.demo.mall.common.exception.ShopException;
 import com.demo.mall.common.response.ServerResponseEntity;
 import com.demo.mall.common.utils.PageParam;
 import com.demo.mall.service.AreaService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,13 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/admin/area")
+@Tag(name = "admin-area", description = "區域管理")
 public class AreaController {
 
     @Autowired
     private AreaService areaService;
 
-    @Tag(name = "admin-area-page", description = "區域分頁查詢")
+    @Operation(summary = "admin-area-page", description = "區域分頁查詢")
     @GetMapping("/page")
     @PreAuthorize("@pms.hasPermission('admin:area:page')")
     public ServerResponseEntity<IPage<Area>> page(Area area, PageParam<Area> page) {
@@ -32,7 +34,7 @@ public class AreaController {
         return ServerResponseEntity.success(sysUserPage);
     }
 
-    @Tag(name = "admin-area-list", description = "縣市列表")
+    @Operation(summary = "admin-area-list", description = "縣市列表")
     @GetMapping("/list")
     @PreAuthorize("@pms.hasPermission('admin:area:list')")
     public ServerResponseEntity<List<Area>> list(Area area) {
@@ -43,14 +45,14 @@ public class AreaController {
         return ServerResponseEntity.success(areas);
     }
 
-    @Tag(name = "admin-area-listByPid", description = "根據父級id獲取列表")
+    @Operation(summary = "admin-area-listByPid", description = "根據父級id獲取列表")
     @GetMapping("/listByPid")
     public ServerResponseEntity<List<Area>> listByPid(Long pid) {
         List<Area> list = areaService.listByPid(pid);
         return ServerResponseEntity.success(list);
     }
 
-    @Tag(name = "admin-area-info", description = "獲取訊息")
+    @Operation(summary = "admin-area-info", description = "獲取訊息")
     @GetMapping("info/{id}")
     @PreAuthorize(("@pms.hasPermission('admin:area:info')"))
     public ServerResponseEntity<Area> info(@PathVariable("id") Long id) {
@@ -58,7 +60,7 @@ public class AreaController {
         return ServerResponseEntity.success(area);
     }
 
-    @Tag(name = "admin-area-save", description = "保存區域訊息")
+    @Operation(summary = "admin-area-save", description = "保存區域訊息")
     @PostMapping("/save")
     @PreAuthorize("@pms.hasPermission('admin:area:save')")
     public ServerResponseEntity save(@Valid @RequestBody Area area) {
@@ -71,7 +73,7 @@ public class AreaController {
         return ServerResponseEntity.success();
     }
 
-    @Tag(name = "admin-area-updateInfo", description = "修改區域資訊")
+    @Operation(summary = "admin-area-updateInfo", description = "修改區域資訊")
     @PutMapping("/update")
     @PreAuthorize("@pms.hasPermission('admin:area:update')")
     public ServerResponseEntity update(@Valid @RequestBody Area area) {
@@ -91,7 +93,7 @@ public class AreaController {
         return ServerResponseEntity.success();
     }
 
-    @Tag(name = "admin-area-delete", description = "刪除區域")
+    @Operation(summary = "admin-area-delete", description = "刪除區域")
     @DeleteMapping("/delete")
     @PreAuthorize("@pms.hasPermission('admin:area:delete')")
     public ServerResponseEntity delete(@PathVariable Long id) {
