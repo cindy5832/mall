@@ -51,6 +51,11 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!--  七牛雲-->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+        </dependency>
         <!-- spring 緩存 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

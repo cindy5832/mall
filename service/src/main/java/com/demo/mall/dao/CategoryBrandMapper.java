@@ -7,4 +7,7 @@ public interface CategoryBrandMapper extends BaseMapper<CategoryBrand> {
 
     // 根據品牌名稱刪除分類品牌
     void deletByBrandId(Long brandId);
+
+    // 刪除分類
+    void deleteByCategoryId(Long categoryId);
 }

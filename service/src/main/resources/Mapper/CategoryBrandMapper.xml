@@ -7,4 +7,11 @@
         FROM tz_category_brand
         WHERE brand_id = #{brandId}
     </delete>
+
+    <delete id="deleteByCategoryId">
+        DELETE
+        FROM tz_category_brand
+        WHERE category_id = #{categoryId}
+    </delete>
+
 </mapper>
