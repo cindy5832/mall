@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
+import com.demo.mall.common.serializer.json.ImgJsonSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -50,8 +51,7 @@ public class Product implements Serializable {
     @Schema(description = "簡要描述")
     private String brief;
 
-    // TODO
-    @JsonSerialize
+    @JsonSerialize(using = ImgJsonSerializer.class)
     @Schema(description = "商品主圖")
     private String pic;
 

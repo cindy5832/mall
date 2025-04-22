@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.demo.mall.common.serializer.json.ImgJsonSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -64,8 +65,7 @@ public class IndexImg implements Serializable {
     private Long relation;
 
     @TableField(exist = false)
-    // TODO
-    @JsonSerialize
+    @JsonSerialize(using = ImgJsonSerializer.class)
     @Schema(description = "商品圖片")
     private String pic;
 

@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.demo.mall.bean.vo.UserVO;
+import com.demo.mall.common.serializer.json.ImgJsonSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -74,8 +75,7 @@ public class ProdComm implements Serializable {
     private Integer usefulCounts;
 
     @Schema(description = "附圖的json 以 , 隔開")
-    // TODO
-    @JsonSerialize
+    @JsonSerialize(using = ImgJsonSerializer.class)
     private String pics;
 
     @Schema(description = "是否匿名 0 否 1 是")
