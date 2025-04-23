@@ -5,7 +5,9 @@ import com.demo.mall.bean.model.Product;
 import com.demo.mall.dao.ProductMapper;
 import com.demo.mall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,5 +20,14 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Cacheable(cacheNames = "product", key = "#prodId")
     public Product getProductByProdId(Long prodId) {
         return productMapper.selectById(prodId);
+    }
+
+    @Override
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "product", key = "#prodId"),
+            @CacheEvict(cacheNames = "skuList", key = "#prodId")
+    })
+    public void removeProductCacheByProdId(Long prodId) {
+
     }
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.dao.ProdCommMapper">
+
+    <!--評論管理-->
+    <resultMap id="ProdComm_Prod_User" type="com.demo.mall.bean.model.ProdComm">
+        <id column="prod_comm_id" jdbcType="BIGINT" property="prodCommId"/>
+        <result property="prodId" column="prod_id"/>
+        <result property="orderItemId" column="order_item_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="content" column="content"/>
+        <result property="replyContent" column="reply_content"/>
+        <result property="recTime" column="rec_time"/>
+        <result property="replyTime" column="reply_time"/>
+        <result property="replySts" column="reply_sts"/>
+        <result property="postip" column="postip"/>
+        <result property="score" column="score"/>
+        <result property="usefulCounts" column="useful_counts"/>
+        <result property="pics" column="pics"/>
+        <result property="isAnonymous" column="is_anonymous"/>
+        <result property="status" column="status"/>
+        <result property="prodName" column="prod_name"/>
+        <result property="evaluate" column="evaluate"/>
+        <association property="user" javaType="com.demo.mall.bean.vo.UserVO">
+            <id column="user_id" jdbcType="VARCHAR" property="userId"/>
+            <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+            <result column="user_mobile" jdbcType="VARCHAR" property="userMobile"/>
+        </association>
+    </resultMap>
+
+    <select id="getProdCommPage" resultType="com.demo.mall.bean.model.ProdComm">
+        select
+        pc.prod_comm_id,
+        pc.score,
+        pc.is_anonymous,
+        pc.status,
+        pc.rec_time,
+        pc.reply_time,
+        pc.evaluate,
+        u.nick_name,
+        u.user_mobile,
+        p.prod_name
+        from
+        tz_prod_comm pc
+        left join tz_prod p on p.prod_id = pc.prod_id
+        left join tz_user u on pc.user_id = u.user_id
+        <where>
+            <if test="prodComm.status!=null">
+                and pc.status=#{prodComm.status}
+            </if>
+            <if test="prodComm.prodName!=null and prodComm.prodName!= ''">
+                and p.prod_name like concat('%',#{prodComm.prodName},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

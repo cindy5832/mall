@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.dao.OrderMapper">
+
+    <select id="listOrdersDetailByParam" resultType="com.demo.mall.bean.model.Order">
+        SELECT *,oi.sku_name as item_sku_name,oi.prod_name as item_prod_name FROM
+        (
+        SELECT * FROM tz_order
+        <where>
+            <if test="orderParam.orderNumber != null and orderParam.orderNumber != ''">
+                and order_number = #{orderParam.orderNumber}
+            </if>
+            <if test="orderParam.status != null">
+                and status = #{orderParam.status}
+            </if>
+            <if test="orderParam.shopId != null">
+                and shop_id = #{orderParam.shopId}
+            </if>
+            <if test="orderParam.isPayed != null">
+                and is_payed = #{orderParam.isPayed}
+                and status != 6
+            </if>
+            <if test="orderParam.startTime != null">
+                and create_time &gt; #{orderParam.startTime}
+            </if>
+            <if test="orderParam.endTime != null">
+                and create_time &lt; #{orderParam.endTime}
+            </if>
+        </where>
+        ORDER BY update_time DESC
+        LIMIT #{adapter.begin} , #{adapter.size}
+        ) AS o
+        LEFT JOIN tz_order_item oi
+        ON o.order_number = oi.order_number
+        LEFT JOIN tz_user_addr_order uao
+        ON o.addr_order_id = uao.addr_order_id
+    </select>
+
+    <select id="countOrderDetail" resultType="java.lang.Long">
+        SELECT COUNT(0) FROM tz_order
+        <where>
+            <if test="orderParam.orderNumber != null and orderParam.orderNumber != ''">
+                and order_number = #{orderParam.orderNumber}
+            </if>
+            <if test="orderParam.status != null">
+                and status = #{orderParam.status}
+            </if>
+            <if test="orderParam.shopId != null">
+                and shop_id = #{orderParam.shopId}
+            </if>
+            <if test="orderParam.isPayed != null">
+                and is_payed = #{orderParam.isPayed}
+                and status != 6
+            </if>
+            <if test="orderParam.startTime != null">
+                and create_time &gt; #{orderParam.startTime}
+            </if>
+            <if test="orderParam.endTime != null">
+                and create_time &lt; #{orderParam.endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="getOrderByOrderNmuber" resultType="com.demo.mall.bean.model.Order">
+        SELECT *
+        FROM tz_order o
+        WHERE o.order_number = #{orderNumber}
+    </select>
+
+    <select id="listOrdersDetailByOrder" resultType="com.demo.mall.bean.model.Order">
+        SELECT o.*,oi.*,oi.prod_name as item_prod_name,uao.* FROM tz_order o
+        LEFT JOIN tz_order_item oi ON o.order_number = oi.order_number
+        LEFT JOIN tz_user_addr_order uao ON o.addr_order_id = uao.addr_order_id
+        WHERE o.order_id IN (
+        SELECT * FROM (
+        SELECT o.order_id FROM tz_order o
+        WHERE 1=1
+        <if test="order.orderNumber != null and order.orderNumber != ''">
+            and o.order_number like concat('%',#{order.orderNumber},'%')
+        </if>
+        <if test="order.status != null">
+            and o.status = #{order.status}
+        </if>
+        <if test="order.shopId != null">
+            and o.shop_id = #{order.shopId}
+        </if>
+        <if test="order.isPayed != null">
+            and o.is_payed = #{order.isPayed}
+            and o.status != 6
+        </if>
+        <if test="startTime != null">
+            and o.create_time &gt; #{startTime}
+        </if>
+        <if test="endTime != null">
+            and o.create_time &lt; #{endTime}
+        </if>
+        ORDER BY o.create_time DESC
+        )
+        AS limittable) ORDER BY o.create_time DESC
+    </select>
+
+</mapper>

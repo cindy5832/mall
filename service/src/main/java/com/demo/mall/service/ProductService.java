@@ -7,4 +7,7 @@ public interface ProductService extends IService<Product> {
 
     // 根據商品id獲取商品訊息
     Product getProductByProdId(Long prodId);
+
+    // 根據商品id刪除緩存
+    void removeProductCacheByProdId(Long prodId);
 }
