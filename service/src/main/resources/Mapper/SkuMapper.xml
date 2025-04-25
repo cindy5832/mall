@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.dao.SkuMapper">
+    <insert id="insertBatch">
+        INSERT INTO tz_sku (
+        prod_id,properties,ori_price,price,stocks,actual_stocks,
+        update_time,rec_time,party_code,model_id, pic,
+        sku_name,prod_name,version,weight,volume, status, is_delete
+        )
+        VALUES
+        <foreach collection="skuList" item="sku" separator=",">
+            (
+            #{prodId},#{sku.properties},#{sku.oriPrice},#{sku.price},#{sku.stocks},
+            #{sku.actualStocks}, NOW(),NOW(),#{sku.partyCode},#{sku.modelId}, #{sku.pic},
+            #{sku.skuName},#{sku.prodName},0,#{sku.weight},#{sku.volume}, #{sku.status},0
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteByProdId">
+        UPDATE tz_sku
+        SET is_delete = 1
+        WHERE prod_id = #{prodId}
+    </delete>
+
+    <select id="listByProdId" resultType="com.demo.mall.bean.model.Sku">
+        SELECT *
+        FROM tz_sku
+        WHERE prod_id = #{prodId}
+          AND is_delete = 0
+    </select>
+
+</mapper>

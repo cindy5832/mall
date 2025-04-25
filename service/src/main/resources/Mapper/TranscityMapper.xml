@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.dao.TranscityMapper">
+
+    <insert id="insertTranscities">
+        INSERT INTO tz_transcity (transfee_id,city_id) VALUES
+        <foreach collection="transcities" item="transcity" separator=",">
+            (#{transcity.transfeeId},#{transcity.cityId})
+        </foreach>
+    </insert>
+
+    <insert id="insertTranscityFrees">
+        INSERT INTO tz_transcity_free (transfee_free_id,free_city_id) VALUES
+        <foreach collection="transcityFrees" item="transcityFree" separator=",">
+            (#{transcityFree.transfeeFreeId},#{transcityFree.freeCityId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteBatchByTransfeeIds">
+        DELETE FROM tz_transcity WHERE transfee_id IN
+        <foreach collection="transfeeIds" item="transfeeId" open="(" close=")" separator=",">
+            #{transfeeId}
+        </foreach>
+    </delete>
+    <delete id="deleteBatchByTransfeeFreeIds">
+        DELETE FROM tz_transcity_free WHERE transfee_free_id IN
+        <foreach collection="transfeeFreeIds" item="transfeeFreeId" open="(" close=")" separator=",">
+            #{transfeeFreeId}
+        </foreach>
+    </delete>
+</mapper>

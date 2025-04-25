@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.dao.ProdTagReferenceMapper">
+    <insert id="insertBatch">
+        INSERT INTO tz_prod_tag_reference (shop_id,tag_id,prod_id,`status`,create_time) VALUES
+        <foreach collection="tagList" separator="," item="item">
+            (#{shopId},#{item},#{prodId} ,1,NOW())
+        </foreach>
+    </insert>
+
+    <select id="listTagIdByProdId" resultType="java.lang.Long">
+        SELECT tag_id
+        FROM tz_prod_tag_reference
+        WHERE prod_id = #{prodId}
+    </select>
+</mapper>

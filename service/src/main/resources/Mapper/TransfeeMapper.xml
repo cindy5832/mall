@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.dao.TransfeeMapper">
+
+    <insert id="insertTransfees">
+        INSERT INTO tz_transfee (transport_id,continuous_piece,first_piece,continuous_fee,first_fee) VALUES
+        <foreach collection="list" item="transfee" separator=",">
+            (#{transfee.transportId},#{transfee.continuousPiece},#{transfee.firstPiece},#{transfee.continuousFee},#{transfee.firstFee})
+        </foreach>
+    </insert>
+
+    <insert id="insertTransfeeFrees">
+        INSERT INTO tz_transfee_free (free_type,amount,piece,transport_id) VALUES
+        <foreach collection="list" item="transfeeFree" separator=",">
+            (#{transfeeFree.freeType},#{transfeeFree.amount},#{transfeeFree.piece},#{transfeeFree.transportId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByTrnasportId">
+        DELETE
+        FROM tz_transfee
+        WHERE transport_id = #{transportId}
+    </delete>
+
+    <delete id="deleteTransfeeFreeByTransportId">
+        DELETE
+        FROM tz_transfee_free
+        WHERE transport_id = #{transportId}
+    </delete>
+
+</mapper>

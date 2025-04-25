@@ -31,7 +31,7 @@ public class Json {
     }
 
     // 轉json
-    public static String toJson(Object obj) {
+    public static String toJsonString(Object obj) {
         try {
             return objectMapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
