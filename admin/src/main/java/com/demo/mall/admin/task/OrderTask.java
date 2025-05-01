@@ -49,8 +49,8 @@ public class OrderTask {
     @XxlJob("cancelOrder")
     public void cancelOrder() {
         Date now = new Date();
-        logger.info("取消超时未支付订单。。。");
-        // 获取30分钟之前未支付的订单
+        logger.info("取消超時未支付訂單...");
+        // 獲取30分鐘前未支付的訂單
         List<Order> orders = orderService.listOrderAndOrderItems(OrderStatus.UNPAY.value(), DateUtil.offsetMinute(now, -30));
         if (CollectionUtil.isEmpty(orders)) {
             return;
@@ -65,14 +65,12 @@ public class OrderTask {
         }
     }
 
-    /**
-     * 确认收货
-     */
+    // 確認收貨
     @XxlJob("confirmOrder")
     public void confirmOrder() {
         Date now = new Date();
         logger.info("系统自动确认收货订单。。。");
-        // 获取15天之前未支付的订单
+        // 獲取15天之前未支付的訂單
         List<Order> orders = orderService.listOrderAndOrderItems(OrderStatus.CONSIGNMENT.value(), DateUtil.offsetDay(now, -15));
         if (CollectionUtil.isEmpty(orders)) {
             return;

@@ -1,5 +1,6 @@
 package com.demo.mall.dao;
 
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.demo.mall.bean.app.dto.MyOrderDto;
 import com.demo.mall.bean.app.dto.OrderCountData;
@@ -42,4 +43,7 @@ public interface OrderMapper extends BaseMapper<Order> {
 
     // 根據用戶id獲取各狀態的訂單數量
     OrderCountData getOrderCount(String userId);
+
+    // 根據參數獲取訂單
+    List<Order> listOrderAndOrderItem(@Param("orderStatus") Integer orderStatus, @Param("lessThanUpdateTime") DateTime lessThanUpdateTime);
 }

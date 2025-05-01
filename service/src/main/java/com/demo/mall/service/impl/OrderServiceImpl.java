@@ -1,6 +1,7 @@
 package com.demo.mall.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.demo.mall.bean.app.dto.OrderCountData;
@@ -110,5 +111,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public OrderCountData getOrderCount(String userId) {
         return orderMapper.getOrderCount(userId);
+    }
+
+    @Override
+    public List<Order> listOrderAndOrderItems(Integer orderStatus, DateTime lessThanUpdateTime) {
+        return orderMapper.listOrderAndOrderItem(orderStatus, lessThanUpdateTime);
     }
 }

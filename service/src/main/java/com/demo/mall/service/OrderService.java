@@ -1,5 +1,6 @@
 package com.demo.mall.service;
 
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.demo.mall.bean.app.dto.OrderCountData;
@@ -35,4 +36,7 @@ public interface OrderService extends IService<Order> {
 
     // 根據用戶id獲取各狀態的訂單數量
     OrderCountData getOrderCount(String userId);
+
+    // 根據參數獲取訂單列表
+    List<Order> listOrderAndOrderItems(Integer orderStatus, DateTime lessThanUpdateTime);
 }

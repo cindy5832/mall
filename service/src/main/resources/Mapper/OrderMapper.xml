@@ -158,4 +158,12 @@
         WHERE o.user_id = #{userId}
     </select>
 
+    <select id="listOrderAndOrderItem" resultType="com.demo.mall.bean.model.Order">
+        SELECT o.*, oi.*
+        FROM tz_order o
+                 LEFT JOIN tz_order_item oi ON o.order_number = oi.order_number
+        WHERE o.status = #{orderStatus}
+          AND o.update_time &lt; #{lessThanUpdateTime}
+    </select>
+
 </mapper>
