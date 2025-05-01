@@ -40,7 +40,18 @@ public class Json {
         return null;
     }
 
-    public static <T> List<T> parseObject(String json, Class<T> clazz) {
+    public static <T> T parseObject(String json, Class<T> clazz) {
+        T result = null;
+        try {
+            result = objectMapper.readValue(json, clazz);
+        } catch (Exception e) {
+            log.error("对象转json錯誤：", e);
+        }
+        return result;
+    }
+
+
+    public static <T> List<T> parseArray(String json, Class<T> clazz) {
         T result = null;
         try {
             result = objectMapper.readValue(json, clazz);

@@ -13,4 +13,7 @@ public interface CategoryMapper extends BaseMapper<Category> {
 
     // 增加分類品牌
     void insertCategoryBrand(@Param("categoryId") Long categoryId, @Param("brandIds") List<Long> brandIds);
+
+    // 根據parentId獲得分類列表
+    List<Category> listByParentId(Long parentId);
 }

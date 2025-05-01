@@ -8,4 +8,11 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="listIndexImg" resultType="com.demo.mall.bean.model.IndexImg">
+        SELECT *
+        FROM tz_index_img
+        where `status` = 1
+        ORDER BY seq DESC
+    </select>
 </mapper>

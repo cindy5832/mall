@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.dao.UserAddrMapper">
+
+    <update id="removeDefaultUserAddr">
+        UPDATE tz_user_addr
+        SET common_addr = 0
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="setDefaultUserAddr">
+        UPDATE tz_user_addr
+        SET common_addr = 1
+        WHERE user_id = #{userId}
+          AND addr_id = #{addrId}
+    </update>
+
+    <select id="getDefaultUserAddr" resultType="com.demo.mall.bean.model.UserAddr">
+        SELECT addr_id,
+               user_id,
+               receiver,
+               province,
+               city,
+               area,
+               province_id,
+               city_id,
+               area_id,
+               addr,
+               mobile,
+               common_addr
+        FROM tz_user_addr
+        WHERE user_id = #{userId}
+          AND common_addr = 1
+    </select>
+
+    <select id="getUserAddrByUserIdAndAddrId" resultType="com.demo.mall.bean.model.UserAddr">
+        SELECT addr_id,
+               user_id,
+               receiver,
+               province,
+               city,
+               area,
+               province_id,
+               city_id,
+               area_id,
+               addr,
+               mobile,
+               common_addr
+        FROM tz_user_addr
+        WHERE user_id = #{userId}
+          AND addr_id = #{addrId}
+    </select>
+
+</mapper>

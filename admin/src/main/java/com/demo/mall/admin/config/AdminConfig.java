@@ -1,0 +1,32 @@
+/*
+ * Copyright (c) 2018-2999 广州市蓝海创新科技有限公司 All rights reserved.
+ *
+ * https://www.mall4j.com/
+ *
+ * 未经允许，不可做商业用途！
+ *
+ * 版权所有，侵权必究！
+ */
+
+package com.demo.mall.admin.config;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+
+
+// 商城配置文件
+@Data
+@Component
+@PropertySource("classpath:admin.properties")
+@ConfigurationProperties(prefix = "admin")
+public class AdminConfig {
+
+	// 數據中心
+	private Integer datacenterId;
+
+	// 終端id
+	private Integer workerId;
+
+}

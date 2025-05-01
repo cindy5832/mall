@@ -9,10 +9,18 @@
     </insert>
 
     <select id="tableCategory" resultType="com.demo.mall.bean.model.Category">
-        SELECT category_id, parent_id, category_name, pic, seq, status
+        SELECT category_id, parent_id, category_name, pic, `seq`, `status`
         FROM tz_category
         WHERE shop_id = #{shopId}
         order by seq
+    </select>
+
+    <select id="listByParentId" resultType="com.demo.mall.bean.model.Category">
+        SELECT category_id, category_name, seq, status, pic
+        FROM tz_category
+        WHERE parent_id = #{parentId}
+          AND `status` = 1
+        ORDER BY seq
     </select>
 
 </mapper>

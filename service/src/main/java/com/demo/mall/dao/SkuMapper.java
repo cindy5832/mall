@@ -5,6 +5,7 @@ import com.demo.mall.bean.model.Sku;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SkuMapper extends BaseMapper<Sku> {
 
@@ -17,4 +18,7 @@ public interface SkuMapper extends BaseMapper<Sku> {
 
     // 根據商品id刪除sku
     void deleteByProdId(@Param("prodId") Long prodId);
+
+    // 返回sku庫存
+    void returnStock(@Param("skuCollect") Map<Long, Integer> skuCollect);
 }

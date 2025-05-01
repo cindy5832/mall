@@ -6,7 +6,10 @@ import com.demo.mall.dao.IndexImgMapper;
 import com.demo.mall.service.IndexImgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class IndexImgServiceImpl extends ServiceImpl<IndexImgMapper, IndexImg> implements IndexImgService {
@@ -23,5 +26,11 @@ public class IndexImgServiceImpl extends ServiceImpl<IndexImgMapper, IndexImg> i
     @Override
     public void deleteIndexImgByIds(Long[] ids) {
         indexImgMapper.deleteIndexImgByIds(ids);
+    }
+
+    @Override
+    @Cacheable(cacheNames = "indexImg", key = "'indexImg'")
+    public List<IndexImg> listIndexImg() {
+        return indexImgMapper.listIndexImg();
     }
 }

@@ -21,4 +21,7 @@ public interface CategoryService extends IService<Category> {
 
     // 根據商店id和層級獲取商品分類
     List<Category> treeSelect(Long shopId, int grade);
+
+    // 根據parentId獲取分類
+    List<Category> listByParentId(Long parentId);
 }

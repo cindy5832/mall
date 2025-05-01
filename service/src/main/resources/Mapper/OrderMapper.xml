@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.demo.mall.dao.OrderMapper">
+    <update id="cancelOrders">
+        UPDATE tz_order
+        SET `status`=6,cancel_time = NOW()
+        WHERE is_payed = 0 AND order_id IN
+        <foreach collection="orders" item="order" open="(" close=")" separator=",">
+            #{order.orderId}
+        </foreach>
+    </update>
+
+    <update id="confirmOrder">
+        UPDATE tz_order
+        SET `status`=5,finally_time = NOW()
+        WHERE order_id IN
+        <foreach collection="orders" item="order" open="(" close=")" separator=",">
+            #{order.orderId}
+        </foreach>
+    </update>
+
+    <update id="deleteOrders">
+        UPDATE tz_order SET `delete_status`=2
+        WHERE order_id IN
+        <foreach collection="orders" item="order" open="(" close=")" separator=",">
+            #{order.orderId}
+        </foreach>
+    </update>
 
     <select id="listOrdersDetailByParam" resultType="com.demo.mall.bean.model.Order">
         SELECT *,oi.sku_name as item_sku_name,oi.prod_name as item_prod_name FROM
@@ -97,6 +122,40 @@
         ORDER BY o.create_time DESC
         )
         AS limittable) ORDER BY o.create_time DESC
+    </select>
+
+    <select id="listMyOrderByUserIdAndStatus" resultType="com.demo.mall.bean.app.dto.MyOrderDto">
+        SELECT o.actual_total,oi.pic,oi.price,oi.prod_name,oi.sku_name,oi.prod_count,o.status,o.order_number
+        FROM (
+        SELECT * FROM tz_order temp
+        WHERE temp.user_id = #{userId} and temp.delete_status = 0
+        <if test="status != null and status != 0">
+            AND temp.status = #{status}
+        </if>
+        ORDER BY temp.create_time DESC
+        LIMIT #{adapter.begin} , #{adapter.size}
+        )AS o
+        LEFT JOIN tz_order_item oi ON o.order_number = oi.order_number
+    </select>
+
+    <select id="countMyOrderByUserIdAndStatus" resultType="java.lang.Long">
+        SELECT count(0) FROM tz_order o
+        WHERE o.user_id = #{userId} AND o.delete_status = 0
+        <if test="status != null and status != 0">
+            AND o.status = #{status}
+        </if>
+    </select>
+
+    <select id="getOrderCount" resultType="com.demo.mall.bean.app.dto.OrderCountData">
+        SELECT COUNT(o.order_id)                                           AS all_count,
+               COUNT(CASE WHEN o.status = 1 THEN o.order_id ELSE NULL END) AS unPay,
+               COUNT(CASE WHEN o.status = 2 THEN o.order_id ELSE NULL END) AS payed,
+               COUNT(CASE WHEN o.status = 3 THEN o.order_id ELSE NULL END) AS consignment,
+               COUNT(CASE WHEN o.status = 4 THEN o.order_id ELSE NULL END) AS confirm,
+               COUNT(CASE WHEN o.status = 5 THEN o.order_id ELSE NULL END) AS success,
+               COUNT(CASE WHEN o.status = 6 THEN o.order_id ELSE NULL END) AS `close`
+        FROM tz_order o
+        WHERE o.user_id = #{userId}
     </select>
 
 </mapper>

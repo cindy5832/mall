@@ -26,8 +26,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     @Autowired
     private CategoryMapper categoryMapper;
+
     @Autowired
     private CategoryPropMapper categoryPropMapper;
+
     @Autowired
     private CategoryBrandMapper categoryBrandMapper;
 
@@ -72,6 +74,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
                         .eq(Category::getShopId, shopId)
         );
         return categoryListToTree(categories);
+    }
+
+    @Override
+    public List<Category> listByParentId(Long parentId) {
+        return categoryMapper.listByParentId(parentId);
     }
 
     private List<Category> categoryListToTree(List<Category> categories) {

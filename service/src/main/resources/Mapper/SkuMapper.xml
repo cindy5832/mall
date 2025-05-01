@@ -17,6 +17,14 @@
         </foreach>
     </insert>
 
+    <update id="returnStock">
+        <foreach collection="skuCollect" item="changeStocks" index="skuId" separator=";">
+            UPDATE tz_sku
+            SET stocks = stocks + #{changeStocks}
+            WHERE sku_id = #{skuId}
+        </foreach>
+    </update>
+
     <delete id="deleteByProdId">
         UPDATE tz_sku
         SET is_delete = 1
