@@ -12,4 +12,7 @@ public interface SkuService extends IService<Sku> {
 
     // 根據商品id獲取商品中的Sku列表
     List<Sku> listByProdId(Long prodId);
+
+    // 根據skuId獲取sku訊息
+    Sku getSkuBySkuId(Long skuId);
 }

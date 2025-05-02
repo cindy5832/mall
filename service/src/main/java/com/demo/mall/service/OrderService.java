@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.demo.mall.bean.app.dto.OrderCountData;
+import com.demo.mall.bean.app.dto.ShopCartOrderMergerDto;
 import com.demo.mall.bean.model.Order;
 import com.demo.mall.bean.param.OrderParam;
 import com.demo.mall.common.utils.PageParam;
@@ -39,4 +40,16 @@ public interface OrderService extends IService<Order> {
 
     // 根據參數獲取訂單列表
     List<Order> listOrderAndOrderItems(Integer orderStatus, DateTime lessThanUpdateTime);
+
+    // 新增訂單緩存
+    ShopCartOrderMergerDto putConfirmOrderCache(String userId, ShopCartOrderMergerDto shopCartOrderMergerDto);
+
+    // 根據用戶id獲取訂單緩存
+    ShopCartOrderMergerDto getConfirmOrderCache(String userId);
+
+    // 提交訂單
+    List<Order> submit(String userId, ShopCartOrderMergerDto mergerOrder);
+
+    // 根據用戶id刪除訂單緩存
+    void removeConfirmOrderCache(String userId);
 }

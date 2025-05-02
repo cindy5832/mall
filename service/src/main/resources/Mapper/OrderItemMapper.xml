@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.demo.mall.dao.OrderItemMapper">
+    <insert id="insertBatch">
+        INSERT INTO `tz_order_item` (shop_id,order_number,prod_id,sku_id,sku_name,
+        prod_count,prod_name,pic,price,user_id,product_total_amount,rec_time,comm_sts,
+        distribution_card_no,basket_date) VALUES
+        <foreach collection="list" item="orderItem" separator=",">
+            (#{orderItem.shopId},#{orderItem.orderNumber},#{orderItem.prodId},#{orderItem.skuId},#{orderItem.skuName},
+            #{orderItem.prodCount},#{orderItem.prodName},#{orderItem.pic},#{orderItem.price},#{orderItem.userId},#{orderItem.productTotalAmount},#{orderItem.recTime},#{orderItem.commSts},
+            #{orderItem.distributionCardNo},#{orderItem.basketDate})
+        </foreach>
+    </insert>
 
     <select id="listByOrderNumber" resultType="com.demo.mall.bean.model.OrderItem">
         SELECT *
