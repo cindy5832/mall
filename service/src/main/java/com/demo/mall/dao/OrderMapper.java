@@ -46,4 +46,7 @@ public interface OrderMapper extends BaseMapper<Order> {
 
     // 根據參數獲取訂單
     List<Order> listOrderAndOrderItem(@Param("orderStatus") Integer orderStatus, @Param("lessThanUpdateTime") DateTime lessThanUpdateTime);
+
+    // 更新訂單為支付成功
+    void updateByToPaySuccess(@Param("orderNumbers") List<String> orderNumbers, @Param("payType") Integer payType);
 }

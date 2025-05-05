@@ -27,6 +27,15 @@
         </foreach>
     </update>
 
+    <update id="updateByToPaySuccess">
+        UPDATE tz_order
+        SET status = 2,is_payed =1,update_time=NOW(),pay_time=NOW(),pay_type =#{payType}
+        WHERE order_number IN
+        <foreach collection="orderNumbers" item="orderNumber" separator="," open="(" close=")">
+            #{orderNumber}
+        </foreach>
+    </update>
+
     <select id="listOrdersDetailByParam" resultType="com.demo.mall.bean.model.Order">
         SELECT *,oi.sku_name as item_sku_name,oi.prod_name as item_prod_name FROM
         (

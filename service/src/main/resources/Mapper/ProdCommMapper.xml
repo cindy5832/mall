@@ -28,6 +28,24 @@
         </association>
     </resultMap>
 
+    <sql id="ProdCommDto_SQL">
+        pc
+        .
+        prod_comm_id
+        ,
+        pc.reply_content,
+        pc.rec_time,
+        pc.score,
+        pc.is_anonymous,
+        pc.pics,
+        pc.user_id,
+        pc.reply_sts,
+        pc.evaluate,
+        pc.content,
+        u.nick_name,
+        u.pic
+    </sql>
+
     <select id="getProdCommPage" resultType="com.demo.mall.bean.model.ProdComm">
         select
         pc.prod_comm_id,
@@ -52,6 +70,41 @@
                 and p.prod_name like concat('%',#{prodComm.prodName},'%')
             </if>
         </where>
+    </select>
+
+    <select id="getProdCommDataByProdId" resultType="com.demo.mall.bean.app.dto.ProdCommDataDto">
+        SELECT count(1)                                               AS number,
+               count(CASE WHEN evaluate = 0 THEN 1 ELSE null END)     AS praise_number,
+               count(CASE WHEN evaluate = 1 THEN 1 ELSE null END)     AS secondary_number,
+               count(CASE WHEN evaluate = 2 THEN 1 ELSE null END)     AS negative_number,
+               count(CASE WHEN pics is not null THEN 1 ELSE null END) AS pic_number
+        FROM tz_prod_comm
+        WHERE prod_id = #{prodId} and status = 1
+    </select>
+
+    <select id="getProdCommDtoPageByUserId" resultType="com.demo.mall.bean.app.dto.ProdCommDto">
+        SELECT
+        <include refid="ProdCommDto_SQL"/>
+        FROM
+        tz_prod_comm pc
+        LEFT JOIN tz_user u ON u.user_id=pc.user_id
+        WHERE pc.user_id = #{userId} AND pc.status = 1
+    </select>
+
+    <select id="getProdCommDtoPageByProdId" resultType="com.demo.mall.bean.app.dto.ProdCommDto">
+        SELECT
+        <include refid="ProdCommDto_SQL"/>
+        FROM
+        tz_prod_comm pc
+        LEFT JOIN tz_user u ON u.user_id=pc.user_id
+        WHERE pc.prod_id = #{prodId} AND pc.status = 1
+        <if test="evaluate != -1 and evaluate != 3">
+            AND pc.evaluate = #{evaluate}
+        </if>
+        <if test="evaluate == 3">
+            AND pc.pics is not null
+        </if>
+        ORDER BY pc.rec_time desc
     </select>
 
 </mapper>

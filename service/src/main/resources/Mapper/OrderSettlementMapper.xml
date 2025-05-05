@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.dao.OrderSettlementMapper">
+
+    <update id="updateByOrderNumberAndUserId">
+        UPDATE tz_order_settlement
+        SET
+        <if test="orderSettlement.payNo != null ">
+            pay_no = #{orderSettlement.payNo},
+        </if>
+        <if test="orderSettlement.payType != null ">
+            pay_type = #{orderSettlement.payType},
+        </if>
+        <if test="orderSettlement.isClearing != null ">
+            is_clearing = #{orderSettlement.isClearing},
+        </if>
+        <if test="orderSettlement.clearingTime != null ">
+            clearing_time = #{orderSettlement.clearingTime},
+        </if>
+        order_number = #{orderSettlement.orderNumber}
+        WHERE order_number = #{orderSettlement.orderNumber} AND user_id = #{orderSettlement.userId}
+    </update>
+
+    <update id="updateToPay">
+        UPDATE tz_order_settlement
+        SET pay_status = 1,
+            version    = version + 1
+        WHERE pay_no = #{payNo}
+          AND version = #{version}
+    </update>
+
+    <select id="getSettlementByPayNo" resultType="com.demo.mall.bean.model.OrderSettlement">
+        SELECT *
+        FROM tz_order_settlement
+        WHERE pay_no = #{payNo}
+    </select>
+
+</mapper>
