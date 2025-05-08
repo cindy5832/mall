@@ -19,6 +19,14 @@
         </foreach>
     </update>
 
+    <update id="updateStocks">
+        UPDATE tz_prod
+        SET total_stocks = total_stocks - #{prod.totalStocks},
+            version      = version + 1
+        WHERE prod_id = #{prod.prodId}
+          AND #{prod.totalStocks} &lt;= total_stocks
+    </update>
+
     <select id="pageByCategoryId" resultType="com.demo.mall.bean.app.dto.ProductDto">
         SELECT tp.*,tc.category_name,tsd.shop_name FROM tz_prod tp
         LEFT JOIN tz_category tc ON tp.category_id = tc.category_id

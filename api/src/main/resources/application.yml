@@ -1,0 +1,42 @@
+spring:
+  # 環境 dev|test|prod
+  profiles:
+    active: dev
+  #文件上傳設置
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+# mybaits-plus配置
+mybatis-plus:
+  # MyBatis Mapper所對應的XML文件位置
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  global-config:
+    # 關閉MP3.0自带的banner
+    banner: false
+    db-config:
+      # 主鍵類型 0:數據庫ID自增 1.未定義 2.用戶輸入 3 id_worker 4.uuid 5.id_worker字符串表示
+      id-type: AUTO
+      #字段策略 0:"忽略判斷",1:"非 NULL 判斷"),2:"非空判斷"
+      field-strategy: NOT_NULL
+      # 默認數據庫表下滑線命名
+      table-underline: true
+
+management:
+  server:
+    add-application-context-header: false
+sa-token:
+  # token名稱 (同時也是cookie名稱)
+  token-name: Authorization
+  # 是否允许同一帳號併發登入 (為true時允許一起登入, 为false時薪登入擠掉舊登入)
+  is-concurrent: true
+  # 在多人登入同一帳號時，是否共用一個token(不共用，避免登出時導致其他用戶也登出)
+  is-share: false
+  # token風格(默認可選值：uuid、simple-uuid、random-32、random-64、random-128、tik)
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: false

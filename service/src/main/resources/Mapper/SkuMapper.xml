@@ -25,6 +25,15 @@
         </foreach>
     </update>
 
+    <update id="updateStocks">
+        UPDATE tz_sku
+        SET stocks      = stocks - #{sku.stocks},
+            version     = version + 1,
+            update_time = NOW()
+        WHERE sku_id = #{sku.skuId}
+          AND #{sku.stocks} &lt;= stocks
+    </update>
+
     <delete id="deleteByProdId">
         UPDATE tz_sku
         SET is_delete = 1

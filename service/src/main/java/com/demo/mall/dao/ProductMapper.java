@@ -33,4 +33,7 @@ public interface ProductMapper extends BaseMapper<Product> {
 
     // 獲取用戶的收藏商品列表
     IPage<ProductDto> collectionProds(@Param("page") PageParam page, @Param("userId") String userId);
+
+    // 更新商品庫存
+    int updateStocks(@Param("prod") Product prod);
 }

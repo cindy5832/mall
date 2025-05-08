@@ -21,4 +21,7 @@ public interface SkuMapper extends BaseMapper<Sku> {
 
     // 返回sku庫存
     void returnStock(@Param("skuCollect") Map<Long, Integer> skuCollect);
+
+    // 更新sku庫存
+    int updateStocks(@Param("sku") Sku sku);
 }
