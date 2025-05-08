@@ -5,7 +5,9 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.demo.mall.bean.app.dto.ShopCartDto;
 import com.demo.mall.bean.app.dto.ShopCartItemDto;
+import com.demo.mall.bean.app.param.ChangeShopCartParam;
 import com.demo.mall.bean.app.param.OrderItemParam;
+import com.demo.mall.bean.app.param.ShopCartParam;
 import com.demo.mall.bean.event.ShopCartEvent;
 import com.demo.mall.bean.model.Basket;
 import com.demo.mall.bean.model.Product;
@@ -130,7 +132,13 @@ public class BasketServiceImpl extends ServiceImpl<BasketMapper, Basket> impleme
         return shopCartDtos;
     }
 
-    private List<ShopCartItemDto> getShopCartItems(String userId) {
+    @Override
+    @CacheEvict(cacheNames = "ShopCartItems", key = "#userId")
+    public void updateBasketByShopCartParam(String userId, Map<Long, ShopCartParam> basketIdShopCartParamMap) {
+        basketMapper.updateDiscountItemId(userId, basketIdShopCartParamMap);
+    }
+
+    public List<ShopCartItemDto> getShopCartItems(String userId) {
         // 調用緩存訊息
         List<ShopCartItemDto> shopCartItemDtoList = cacheManagerUtil.getCache("ShopCartItems", userId);
         if (shopCartItemDtoList != null) return shopCartItemDtoList;
@@ -140,5 +148,43 @@ public class BasketServiceImpl extends ServiceImpl<BasketMapper, Basket> impleme
         }
         cacheManagerUtil.putCache("ShopCartItems", userId, shopCartItemDtoList);
         return shopCartItemDtoList;
+    }
+
+    @Override
+    @CacheEvict(cacheNames = "ShopCartItems", key = "#userId")
+    public void deleteShopCartItemsByBasketIds(String userId, List<Long> basketIds) {
+        basketMapper.deleteShopCartItemsByBasketIds(userId, basketIds);
+    }
+
+    @Override
+    @CacheEvict(cacheNames = "ShopCartItems", key = "#userId")
+    public void deleteAllShopCartItems(String userId) {
+        basketMapper.deleteAllShopCartItems(userId);
+    }
+
+    @Override
+    @CacheEvict(cacheNames = "ShopCartItems", key = "#basket.userId")
+    public void updateShopCartItem(Basket basket) {
+        basketMapper.updateById(basket);
+    }
+
+    @Override
+    @CacheEvict(cacheNames = "ShopCartItems", key = "#userId")
+    public void addShopCartItem(ChangeShopCartParam param, String userId) {
+        Basket basket = new Basket();
+        basket.setBasketCount(param.getCount());
+        basket.setBasketDate(new Date());
+        basket.setProdId(param.getProdId());
+        basket.setShopId(param.getShopId());
+        basket.setUserId(userId);
+        basket.setSkuId(param.getSkuId());
+        basket.setDistributionCardNo(param.getDistributionCardNo());
+        basketMapper.insert(basket);
+    }
+
+    @Override
+    @CacheEvict(cacheNames = "ShopCartItems", key = "#userId")
+    public void cleanExpiryProdList(String userId) {
+        basketMapper.cleanExpiryProdList(userId);
     }
 }

@@ -2,6 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.demo.mall.dao.BasketMapper">
 
+    <update id="updateDiscountItemId">
+        <foreach collection="basketIdShopCartParamMap" index="key" item="shopCartParam" separator=";">
+            UPDATE tz_basket
+            SET discount_id = #{shopCartParam.discountId}
+            WHERE basket_id = #{key} AND user_id =
+            #{userId}
+        </foreach>
+    </update>
+
+    <delete id="deleteShopCartItemsByBasketIds">
+        DELETE FROM tz_basket
+        WHERE user_id = #{userId} AND basket_id IN
+        <foreach collection="basketIds" item="basketId" open="(" separator="," close=")">
+            #{basketId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAllShopCartItems">
+        DELETE
+        FROM tz_basket
+        WHERE user_id = #{userId}
+    </delete>
+
+    <delete id="cleanExpiryProdList">
+        DELETE
+        FROM tz_basket
+        WHERE basket_id IN (SELECT basket_id
+                            FROM (SELECT tb.basket_id basket_id
+                                  FROM tz_basket tb
+                                           LEFT JOIN tz_shop_detail tsd
+                                                     ON tb.shop_id = tsd.shop_id
+                                           LEFT JOIN tz_prod tp
+                                                     ON tb.prod_id = tp.prod_id
+                                           LEFT JOIN tz_sku ts
+                                                     ON tb.sku_id = ts.sku_id
+                                  WHERE tp.status = 0
+                                     OR ts.status = 0 AND tb.user_id = #{userId}) AS temp)
+    </delete>
+
     <select id="listUserIdsByProdId" resultType="java.lang.String">
         SELECT user_id
         FROM tz_basket

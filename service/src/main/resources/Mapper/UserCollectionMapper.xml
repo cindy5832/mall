@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.mall.dao.UserCollectionMapper">
+
+    <select id="getUserCollectionDtoPageByUserId" resultType="com.demo.mall.bean.app.dto.UserCollectionDto">
+        SELECT uc.id,
+               uc.create_time,
+               p.prod_name
+        FROM tz_user_collection uc
+                 LEFT JOIN tz_prod p ON uc.prod_id = p.prod_id
+    </select>
+</mapper>

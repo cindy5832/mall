@@ -60,6 +60,8 @@
         <satoken.version>1.40.0</satoken.version>
         <fastjson.version>2.0.53</fastjson.version>
         <qiniu.version>7.12.1</qiniu.version>
+        <aliyun-core.version>4.3.9</aliyun-core.version>
+        <aliyun-dysmsapi.version>1.1.0</aliyun-dysmsapi.version>
     </properties>
 
     <dependencyManagement>
@@ -127,6 +129,11 @@
                 <groupId>com.qiniu</groupId>
                 <artifactId>qiniu-java-sdk</artifactId>
                 <version>${qiniu.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable-thread-local.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

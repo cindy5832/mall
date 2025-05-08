@@ -2,10 +2,14 @@ package com.demo.mall.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.demo.mall.bean.app.dto.ProductDto;
+import com.demo.mall.bean.app.dto.TagProductDto;
 import com.demo.mall.bean.model.ProdTagReference;
 import com.demo.mall.bean.model.Product;
 import com.demo.mall.bean.model.Sku;
+import com.demo.mall.common.utils.PageParam;
 import com.demo.mall.dao.ProdTagReferenceMapper;
 import com.demo.mall.dao.ProductMapper;
 import com.demo.mall.dao.SkuMapper;
@@ -112,5 +116,35 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         // 刪除商品關聯的分組標籤
         prodTagReferenceMapper.delete(new LambdaQueryWrapper<ProdTagReference>()
                 .eq(ProdTagReference::getProdId, prodId));
+    }
+
+    @Override
+    public IPage<ProductDto> pageByCategoryId(PageParam<ProductDto> page, Long categoryId) {
+        return productMapper.pageByCategoryId(page, categoryId);
+    }
+
+    @Override
+    public IPage<ProductDto> pageByPutAwayTime(PageParam<ProductDto> page) {
+        return productMapper.pagePutAwayTime(page);
+    }
+
+    @Override
+    public IPage<ProductDto> pageByTagId(PageParam<ProductDto> page, Long tagId) {
+        return productMapper.pageByTagId(page, tagId);
+    }
+
+    @Override
+    public IPage<ProductDto> moreBuyProdList(PageParam<ProductDto> page) {
+        return productMapper.moreBuyProdList(page);
+    }
+
+    @Override
+    public List<TagProductDto> tagProdList() {
+        return productMapper.tagProdList();
+    }
+
+    @Override
+    public IPage<ProductDto> collectionProds(PageParam page, String userId) {
+        return productMapper.collectionProds(page, userId);
     }
 }
