@@ -8,7 +8,7 @@
  * 版权所有，侵权必究！
  */
 
-package com.demo.mall.common.enums;
+package com.demo.mall.bean.enums;
 
 
 public enum PayType {

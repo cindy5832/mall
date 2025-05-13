@@ -152,7 +152,7 @@ public class TokenStore {
      * @description: 刪除當前token
      * @param: [accessToken]
      **/
-    private void deleteCurrentToken(String accessToken) {
+    public void deleteCurrentToken(String accessToken) {
         // 刪除用戶緩存
         String keyName = OauthCacheNames.USER_INFO + accessToken;
         redisTemplate.delete(keyName);

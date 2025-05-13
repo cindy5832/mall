@@ -2,4 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.demo.mall.system.dao.SysMenuMapper">
 
+    <select id="listMenu" resultType="com.demo.mall.system.model.SysMenu">
+        SELECT *
+        FROM tz_sys_menu
+        WHERE `type` != 2
+        ORDER BY order_num
+    </select>
+
+    <select id="listMenuByUserId" resultType="com.demo.mall.system.model.SysMenu">
+        SELECT DISTINCT m.menu_id AS menu_id, m.parent_id, m.name, url, m.type, m.icon, m.order_num
+        FROM tz_sys_user_role ur
+                 LEFT JOIN tz_sys_role_menu rm ON ur.role_id = rm.role_id
+                 LEFT JOIN tz_sys_menu m ON m.`menu_id` = rm.`menu_id`
+        WHERE ur.user_id = #{userId}
+          and m.type != 2
+        order by order_num
+    </select>
+
+    <select id="listMenuAndBtn" resultType="com.demo.mall.system.model.SysMenu">
+        SELECT *
+        FROM tz_sys_menu
+        ORDER BY order_num
+    </select>
+
+    <select id="listRootMenu" resultType="com.demo.mall.system.model.SysMenu">
+        SELECT menu_id, `name`
+        FROM tz_sys_menu
+        WHERE `type` = 0
+    </select>
+
+    <select id="listSimpleMenuNoButton" resultType="com.demo.mall.system.model.SysMenu">
+        SELECT menu_id, parent_id, `name`
+        FROM tz_sys_menu
+        WHERE `type` != 2
+        ORDER BY order_num
+    </select>
+
+    <select id="listChildrenMenuByParentId" resultType="com.demo.mall.system.model.SysMenu">
+        SELECT menu_id, `name`
+        FROM tz_sys_menu
+        WHERE parent_id = #{parentId}
+    </select>
+
+    <select id="listMenuIdByRoleId" resultType="java.lang.Long">
+        SELECT menu_id
+        FROM tz_sys_role_menu
+        WHERE role_id = #{roleId}
+    </select>
+
 </mapper>

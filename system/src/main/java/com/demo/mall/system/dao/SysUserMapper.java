@@ -21,4 +21,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return java.util.List<java.lang.String>
      **/
     List<String> queryAllPerms(@Param("userId") Long userId);
+
+    // 根據用戶id 批量刪除用戶
+    void deletBatch(@Param("userIds") Long[] userIds, @Param("shopId") Long shopId);
 }

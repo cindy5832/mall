@@ -8,7 +8,7 @@ import com.demo.mall.bean.model.Order;
 import com.demo.mall.bean.model.OrderSettlement;
 import com.demo.mall.bean.param.PayParam;
 import com.demo.mall.bean.pay.PayInfoDto;
-import com.demo.mall.common.enums.PayType;
+import com.demo.mall.bean.enums.PayType;
 import com.demo.mall.common.exception.ShopException;
 import com.demo.mall.common.utils.Arith;
 import com.demo.mall.dao.OrderMapper;
